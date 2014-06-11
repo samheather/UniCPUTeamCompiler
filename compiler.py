@@ -39,7 +39,6 @@ def setupAndStart():
 	compiled = ""
 	for lineNumber, line in enumerate(lines):
 		line = line.upper()
-		#pass in line number
 		compiled += compileLine(line, lineNumber+1)
 	print compiled
 
