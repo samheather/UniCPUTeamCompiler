@@ -1,5 +1,8 @@
-add 7
+load 0
 add 8
+
 // do no random stuff
-add -7
-add 3
+add 7
+add -7	//revert
+
+input

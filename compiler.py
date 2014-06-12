@@ -44,17 +44,39 @@ def setupAndStart():
 
 def compileLine(inputLine, lineNumber):
 	''' str -> str '''
-	if (inputLine[0:2] == '//'):
-		return ''
-	tokens = inputLine.split(' ')
-	if (len(tokens)!= 2) and not (tokens[0] in standaloneOpcodes):
-		raise ValueError('Expected operand for opcode: ' + tokens[0])
-	if (debugMode):
-		return compileInstruction(tokens[0], lineNumber) + " " \
-		+ compileValue(int(tokens[1]), lineNumber) + "\n"
-	else:
-		return compileInstruction(tokens[0], lineNumber) \
-		+ compileValue(int(tokens[1]), lineNumber)
+	tokens = removeComment(inputLine).split()
+
+	if len(tokens) == 0:	#comment / whitespace
+		return ""
+	    
+	elif len(tokens) == 1:	#expecting standalone instruction
+		if not (tokens[0] in standaloneOpcodes):
+			raise ValueError('Expected operand for opcode: ' + tokens[0]) \
+			+ 'Line number: ' + str(lineNumber)
+		elif (debugMode):
+			return compileInstruction(tokens[0], lineNumber) + "\n"
+		else:
+			return compileInstruction(tokens[0], lineNumber)
+		 
+	elif len(tokens) == 2:	#expecting standard instruction
+		if (tokens[0] in standaloneOpcodes):
+			raise ValueError('Unexpected operand for opcode: ' + tokens[0]) \
+			+ 'Line number: ' + str(lineNumber)
+		elif (debugMode):
+			return compileInstruction(tokens[0], lineNumber) + " " \
+			+ compileValue(int(tokens[1]), lineNumber) + "\n"
+		else:
+			return compileInstruction(tokens[0], lineNumber) \
+			+ compileValue(int(tokens[1]), lineNumber)
+
+	else:	#too many operands!
+		raise ValueError('Unexpected operands for opcode: ' + tokens[0]) \
+		+ 'Line number: ' + str(lineNumber)
+	
+def removeComment(instruction):
+	''' str -> str '''
+	return instruction.split("//")[0]
+
 
 def compileInstruction(instruction, lineNumber):
 	''' str -> str '''
