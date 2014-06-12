@@ -11,5 +11,6 @@ To compile:
 To do:
 * Convert output string to bytestring (i.e. group 8bits into a single byte, rather than using 1 byte for each character) (easy)
 * Write output to file (easy)
+* Add support for code labels for jump instructions, as opposed to jump to line number, so they can jump to character labels.
 
 Take a look at the project at http://youtube.com/UniCPUTeam
