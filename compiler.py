@@ -44,6 +44,8 @@ def setupAndStart():
 
 def compileLine(inputLine, lineNumber):
 	''' str -> str '''
+	if (inputLine[0:2] == '//'):
+		return ''
 	tokens = inputLine.split(' ')
 	if (len(tokens)!= 2) and not (tokens[0] in standaloneOpcodes):
 		raise ValueError('Expected operand for opcode: ' + tokens[0])
