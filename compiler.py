@@ -43,6 +43,7 @@ def setupAndStart():
 	print compiled
 
 def compileLine(inputLine, lineNumber):
+	''' str -> str '''
 	tokens = inputLine.split(' ')
 	if (len(tokens)!= 2) and not (tokens[0] in standaloneOpcodes):
 		raise ValueError('Expected operand for opcode: ' + tokens[0])
@@ -54,6 +55,7 @@ def compileLine(inputLine, lineNumber):
 		+ compileValue(int(tokens[1]), lineNumber)
 
 def compileInstruction(instruction, lineNumber):
+	''' str -> str '''
 	if (instruction in compilerDictionary):
 		return compilerDictionary[instruction]
 	else:
@@ -61,9 +63,47 @@ def compileInstruction(instruction, lineNumber):
 		+ 'instruction, on line number: ' + str(lineNumber))
 
 def compileValue(value, lineNumber):
-	if (value < -128) or (value > 127):
+	''' int -> str '''
+	if (value >= 0) and (value <= 127):
+		temp = str(bin(value))[2::]
+		temp = "".join(bulkBinaryTo8Bits(list(temp)))
+		return temp
+	elif (value < 0) and (value > -128):
+		temp = str(bin(value))[3::]
+		# bulk to 8 bits
+		temp=binaryComplement(temp) #flip all bits
+		temp=binaryIncrement(temp) # now add 1
+		temp="".join(temp)
+		return temp #bulk this out to 8 bits
+	else:
 		raise ValueError('Value does not fit into 8 bits.  ' \
 		+ 'Line number: ' + str(lineNumber))
-	return str(bin(value))[2::]
+		
+def bulkBinaryTo8Bits(input):
+	'''list -> list'''
+	for i in range(0,8-len(input)):
+		input.insert(0,'0')
+	return input
+		
+def binaryComplement(input):
+	'''str->str'''
+	# had to custom write this function since library functions tended towards
+	# 32/64/whatever bits repositioning our negation bit.
+	input = list(input)
+	# first bulk to 8 bits
+	input = bulkBinaryTo8Bits(input)
+	# now flip
+	for t in range(0,len(input)):
+		if (input[t] == '0'):
+			input[t] = '1'
+		else:
+			input[t] = '0'
+	return "".join(input)
+		
+def binaryIncrement(input):
+	''' str -> str'''
+	inputInt = int(input, 2)
+	inputInt += 1
+	return str(bin(inputInt))[2::]
 
 setupAndStart()
