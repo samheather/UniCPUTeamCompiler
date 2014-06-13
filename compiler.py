@@ -34,14 +34,18 @@ standaloneOpcodes = ["INPUT", "JUMP", "SHIFTL", "SHIFTR", "ROTL", "ROTR"]
 # useful for easier readability of outputted code.
 debugMode = False
 
+outputFileName = 'googleIsCool.bin'
+
 def setupAndStart():
 	lines = [line.strip() for line in open('./program.uni')]
 	compiled = ""
 	for lineNumber, line in enumerate(lines):
 		line = line.upper()
 		compiled += compileLine(line, lineNumber+1)
-	print compiled
-	outputToBinary(compiled)
+	print "Compiled code:\n------------------------------\n" + compiled \
+	+ "------------------------------"
+	if (outputToBinary(compiled)):
+		print 'Binary output to: ' + outputFileName
 
 def compileLine(inputLine, lineNumber):
 	''' str -> str '''
@@ -134,13 +138,14 @@ def binaryIncrement(input):
 def outputToBinary(compiledCode):
 	if (debugMode):
 		print 'Debug mode - not converting formatted string'
-		return ''
+		return False
 	outputData = ''
 	while (len(compiledCode) > 0):
 		temp = int(compiledCode[0:8], 2)
 		outputData += chr(temp)
 		compiledCode = compiledCode[8:]
-	f = open('googleIsCool.bin', 'wb') #b means binary mode on Windows
+	f = open(outputFileName, 'wb') #b means binary mode on Windows
 	f.write(outputData)
+	return True
 
 setupAndStart()
