@@ -32,7 +32,7 @@ standaloneOpcodes = ["INPUT", "JUMP", "SHIFTL", "SHIFTR", "ROTL", "ROTR"]
 
 # Debug mode > instructions on 1:1 new lines, with space between opcode/operand
 # useful for easier readability of outputted code.
-debugMode = True
+debugMode = False
 
 def setupAndStart():
 	lines = [line.strip() for line in open('./program.uni')]
@@ -41,6 +41,7 @@ def setupAndStart():
 		line = line.upper()
 		compiled += compileLine(line, lineNumber+1)
 	print compiled
+	outputToBinary(compiled)
 
 def compileLine(inputLine, lineNumber):
 	''' str -> str '''
@@ -129,5 +130,17 @@ def binaryIncrement(input):
 	inputInt = int(input, 2)
 	inputInt += 1
 	return str(bin(inputInt))[2::]
+	
+def outputToBinary(compiledCode):
+	if (debugMode):
+		print 'Debug mode - not converting formatted string'
+		return ''
+	outputData = ''
+	while (len(compiledCode) > 0):
+		temp = int(compiledCode[0:8], 2)
+		outputData += chr(temp)
+		compiledCode = compiledCode[8:]
+	f = open('googleIsCool.bin', 'wb') #b means binary mode on Windows
+	f.write(outputData)
 
 setupAndStart()
