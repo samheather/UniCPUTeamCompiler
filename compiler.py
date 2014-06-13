@@ -54,9 +54,9 @@ def compileLine(inputLine, lineNumber):
 			raise ValueError('Expected operand for opcode: ' + tokens[0]) \
 			+ 'Line number: ' + str(lineNumber)
 		elif (debugMode):
-			return compileInstruction(tokens[0], lineNumber) + "\n"
+			return compileInstruction(tokens[0], lineNumber) + " 00000000\n"
 		else:
-			return compileInstruction(tokens[0], lineNumber)
+			return compileInstruction(tokens[0], lineNumber) + "00000000"
 		 
 	elif len(tokens) == 2:	#expecting standard instruction
 		if (tokens[0] in standaloneOpcodes):
