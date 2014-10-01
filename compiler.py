@@ -28,7 +28,9 @@ compilerDictionary = {
 						"ROTR" : "00001111"
 						}
 
-standaloneOpcodes = ["INPUT", "JUMP", "SHIFTL", "SHIFTR", "ROTL", "ROTR"]
+standaloneOpcodes = ["INPUT", "SHIFTL", "SHIFTR", "ROTL", "ROTR"]
+jumpOpcodes = ["JUMPZ", "JUMPNZ", "JUMPC", "JUMPNC", "JUMP"]
+labels = {}
 
 # Debug mode > instructions on 1:1 new lines, with space between opcode/operand
 # useful for easier readability of outputted code.
@@ -42,10 +44,14 @@ def setupAndStart():
 	for lineNumber, line in enumerate(lines):
 		line = line.upper()
 		compiled += compileLine(line, lineNumber+1)
-	print "Compiled code:\n------------------------------\n" + compiled \
-	+ "------------------------------"
+	print "UniCPUTeam Compiler - by Sam Heather, Charlie Ford and Andrei Zisu\n" \
+	+ "Please be aware, output to binary will only work when executing in Python environment <3.0\n" \
+	+ "Compiled code:\n------------------------------\n" + compiled \
+	+ "\n------------------------------"
 	if (outputToBinary(compiled)):
 		print 'Binary output to: ' + outputFileName
+	else:
+		print 'Debug mode, not writing binary file.\n'
 
 def compileLine(inputLine, lineNumber):
 	''' str -> str '''
@@ -67,6 +73,8 @@ def compileLine(inputLine, lineNumber):
 		if (tokens[0] in standaloneOpcodes):
 			raise ValueError('Unexpected operand for opcode: ' + tokens[0]) \
 			+ 'Line number: ' + str(lineNumber)
+		elif (tokens[0] in jumpOpcodes):
+			return compileJump(tokens, lineNumber)
 		elif (debugMode):
 			return compileInstruction(tokens[0], lineNumber) + " " \
 			+ compileValue(int(tokens[1]), lineNumber) + "\n"
@@ -82,6 +90,11 @@ def removeComment(instruction):
 	''' str -> str '''
 	return instruction.split("//")[0]
 
+def compileJump(inputTokens, lineNumber):
+	if (labels.has_key(inputTokens[1])):
+		raise ValueError('Can not re-define label: ' + inputTokens[1] + ' on line: ' + lineNumber)
+	labels[inputTokens[1]] = lineNumber
+	return compileInstruction(inputTokens[0], lineNumber) + inputTokens[1]
 
 def compileInstruction(instruction, lineNumber):
 	''' str -> str '''
