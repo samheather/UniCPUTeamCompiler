@@ -1,10 +1,11 @@
 load 0
+LABEL ABCD
 add 8
 
-JUMP #abcd
+JUMP ABCD
 
 // do no random stuff
 add 7
-add -7	//revert
+add -7	//random comment
 
 input
