@@ -79,7 +79,7 @@ def setupAndStart():
 	# CONCATENATE
 	compiledString = concatenate(compiled, debugMode)
 	
-	print "UniCPUTeam Compiler - by Sam Heather, Charlie Ford and Andrei Zisu\n" \
+	print "\nUniCPUTeam Compiler - by Sam Heather, Charlie Ford and Andrei Zisu\n" \
 	+ "Please be aware, output to binary will only work when executing in Python environment <3.0\n" \
 	+ "Max program length: 128 lines (theoretical: 256, restriction caused by compileValue function in compiler)\n"
 	
