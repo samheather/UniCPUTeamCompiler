@@ -4,8 +4,8 @@ UniCPUTeamCompiler
 **Big important note: toggle debug mode at the top for code readability - if on, output not compilable, if off, output very difficult to read.**
 
 To compile:
-* Place your program code in a file called 'program.uni', in the same directory as compiler.py
-* Open a shell here, and execute 'python compiler.py'
+* Place your program code in a file called `program.uni`, in the same directory as compiler.py
+* Open a shell here, and execute `python compiler.py`
 * Compiled code is output
 
 To do:
