@@ -6,7 +6,7 @@ UniCPUTeamCompiler
 To compile:
 * Place your program code in a file called `program.uni`, in the same directory as compiler.py
 * Open a shell here, and execute `python compiler.py`
-* Compiled code (the binary digits) is output to `googleIsCool.bin`
+* Compiled code (the binary digits) is output to `googleIsCool.bin`, which can then be written to the ROM.
 
 To do:
 Take a look at the issues: https://github.com/samheather/UniCPUTeamCompiler/issues
